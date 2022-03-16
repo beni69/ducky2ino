@@ -86,7 +86,7 @@ fn main() {
                     args.parse()
                         .expect(&format!("Could not parse delay: line {}", index + 1)),
                 ),
-                "STRING" => DuckyCommand::String(args.replace('"', r#"\""#)), // escape "quotes"
+                "STRING" => DuckyCommand::String(args.replace('\\', r#"\\"#).replace('"', r#"\""#)), // escape "quotes" and \backslashes
                 "GUI" => DuckyCommand::Gui(args.chars().next().unwrap()),
                 "SHIFT" | "ALT" | "CTRL" => {
                     DuckyCommand::Modifier(command.to_string(), args.chars().next().unwrap())
@@ -119,7 +119,7 @@ fn main() {
             exit(1);
         }
     }
-    // eprintln!("{:?}", tree);
+    // eprintln!("{:#?}", tree);
 
     let mut code_gen = String::new();
     for command in tree {
